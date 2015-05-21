@@ -48,11 +48,9 @@ To remove this plugin type:
 
 ##Usage
 
-Then, in your js file (probably in index.js)
+Get a reference to the plugin first
 
-
-// Get a reference to the plugin first
-var plugin = new CordovaFacebook();
+```var plugin = new CordovaFacebook();```
 
 The plugin has the following methods:
 * [init](#init)
@@ -312,11 +310,3 @@ You can change your app settings (in index.html), you can also test the features
 
 ##License
 [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html)
-
-##Why another plugin?
-- Why do we implement another plugin since there is already an official [phonegap-facebook-plugin](https://github.com/phonegap/phonegap-facebook-plugin)?
-1. As of today (16.01.2014), [official cordova facebook plugin](https://github.com/phonegap/phonegap-facebook-plugin) project on GitHub has 985 stars (including mine), 118 watchers, 218 open issues, 29 pull requests and 5 branches.
-2. Last commit as of today to master branch was 3 months ago, we don't have time to wait for fixes and new updates.
-3. Official plugin tries to retain the same interface for the Facebook JavaScript SDK, which we believe an unnecessary burden.
-4. We have some live apps that uses the official plugin, and we are scared to update our app to new Cordova version, scared to break things in Facebook side.
-5. Well, it was not that hard to do it, so we did it.

@@ -2,8 +2,8 @@
 var plugin;
 (function (plugin) {
     var CordovaFacebook = (function () {
-        function CordovaFacebook() {
-        }
+        function CordovaFacebook() {}
+
         CordovaFacebook.prototype.init = function (appId, appNamespace, appPermissions, successcb, failcb) {
             if (!window.cordova) {
                 if (failcb)
@@ -147,4 +147,3 @@ var plugin;
     plugin.CordovaFacebook = CordovaFacebook;
 })(plugin || (plugin = {}));
 module.exports = plugin.CordovaFacebook;
-//# sourceMappingURL=CordovaFacebook.js.map
