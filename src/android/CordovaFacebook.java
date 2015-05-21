@@ -1,4 +1,4 @@
-package com.ccsoft.plugin;
+package com.huttarichard;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,7 +21,6 @@ import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.SimpleFacebookConfiguration;
 import com.sromku.simple.fb.entities.Feed;
 import com.sromku.simple.fb.entities.Profile;
-import com.sromku.simple.fb.entities.Score;
 import com.sromku.simple.fb.entities.User;
 import com.sromku.simple.fb.listeners.OnDeleteListener;
 import com.sromku.simple.fb.listeners.OnInviteListener;
@@ -29,7 +28,6 @@ import com.sromku.simple.fb.listeners.OnLoginListener;
 import com.sromku.simple.fb.listeners.OnLogoutListener;
 import com.sromku.simple.fb.listeners.OnProfileListener;
 import com.sromku.simple.fb.listeners.OnPublishListener;
-import com.sromku.simple.fb.listeners.OnScoresListener;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -359,110 +357,6 @@ public class CordovaFacebook extends CordovaPlugin {
         	Runnable runnable = new Runnable() {
     			public void run() {
     				mSimpleFacebook.deleteRequest(req, onDeleteRequestListener);
-    			};
-    		};
-    		cordova.getActivity().runOnUiThread(runnable);
-        	
-			return true;
-        } else if (action.equals("postScore")) {
-
-        	final OnPublishListener onPostScoreListener = new OnPublishListener()
-        	{
-        	    @Override
-        	    public void onFail(String reason)
-        	    {
-        	        // insure that you are logged in before publishing
-        	        Log.w(TAG, reason);
-        	        callbackContext.error(reason);
-        	    }
-
-        	    @Override
-        	    public void onException(Throwable throwable)
-        	    {
-        	        Log.e(TAG, "Bad thing happened", throwable);
-        	        callbackContext.error("exception");
-        	    }
-
-        	    @Override
-        	    public void onThinking()
-        	    {
-        	        // show progress bar or something to the user while publishing
-        	        Log.i(TAG, "In progress");
-        	    }
-
-        	    @Override
-        	    public void onComplete(String postId)
-        	    {
-        	        //Log.i(TAG, "Published score successfully.");
-        	        callbackContext.success();        	        
-        	    }
-        	};
-
-        	final Score score = new Score.Builder()
-	            .setScore(args.getInt(0))
-	            .build();
-        	Runnable runnable = new Runnable() {
-    			public void run() {
-    				mSimpleFacebook.publish(score, onPostScoreListener);
-    			};
-    		};
-    		cordova.getActivity().runOnUiThread(runnable);
-        	
-        	return true;
-        }
-        else if (action.equals("getScores")) {
-        	final OnScoresListener onScoresRequestListener = new OnScoresListener()
-        	{
-        	    @Override
-        	    public void onFail(String reason)
-        	    {
-        	        Log.w(TAG, reason);
-        	        callbackContext.error(reason);
-        	    }
-
-        	    @Override
-        	    public void onException(Throwable throwable)
-        	    {
-        	        Log.e(TAG, "Bad thing happened", throwable);
-        	        callbackContext.error("exception");
-        	    }
-
-        	    @Override
-        	    public void onThinking()
-        	    {
-        	        // show progress bar or something to the user while login is happening
-        	        Log.i(TAG, "In progress");        	        
-        	    }
-
-        	    @Override
-        	    public void onComplete(List<Score> scores)
-        	    {
-        	    	try {
-	        	    	JSONArray jsonScores = new JSONArray();
-	        	    	for (Score item : scores) {	        	    		
-	        	    		JSONObject o = new JSONObject();
-	        	    		JSONObject u = new JSONObject();
-	        	    		User user = item.getUser();
-	        	    		u.put("id", user.getId());
-	        	    		u.put("name", user.getName());
-							o.put("user", u);
-							o.put("score", item.getScore());
-							jsonScores.put(o);
-	        	    	}
-	
-	        	        JSONObject r = new JSONObject();
-	        	        r.put("data", jsonScores);    					
-	    				callbackContext.success(r);
-        	    	} catch (JSONException e) {
-    					Log.e(TAG, "Bad thing happened with get scores json", e);
-    					callbackContext.error("json exception");    					
-    				}        	        
-        	    }
-        	};
-
-        	Runnable runnable = new Runnable() {
-    			public void run() {
-    				mSimpleFacebook.getScores(onScoresRequestListener);
     			};
     		};
     		cordova.getActivity().runOnUiThread(runnable);

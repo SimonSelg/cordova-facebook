@@ -373,30 +373,6 @@ static NSMutableArray *publishPermissions;
         // falback to feed dialog (user does not have FB app installed)
         [self feed:command];
     }
-    
-/*    // if need publish permissions
-    if(publishPermissions.count > 0 && [CordovaFacebook activeSessionHasPermissions:publishPermissions] == NO) {
-            [FBSession.activeSession requestNewPublishPermissions:publishPermissions
-                              defaultAudience:FBSessionDefaultAudienceEveryone
-                            completionHandler:^(FBSession *session, NSError *error) {
-                                if(error != nil) {
-                                    NSLog(@"Request publish err:%@", error);
-                                    return;
-                                }
-                                else if ([CordovaFacebook activeSessionHasPermissions:publishPermissions] == NO) {
-                                    NSLog(@"Request publish failed");
-                                    return;
-                                }
-                                NSLog(@"Request publish granted for: %@", publishPermissions);
-                                // do feed post now
-                                [self post:command];
-                            }];
-    }
-    else {
-        // do feed post now
-        [self post:command];
-    }
-*/
 }
 
 /**
@@ -533,58 +509,6 @@ static NSMutableArray *publishPermissions;
                           }];
 }
 
-- (void)postScore:(CDVInvokedUrlCommand*)command
-{
-    if([FBSession.activeSession isOpen] == NO) { // not have a session to post
-        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no active session"];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        return;
-    }
-    if([command.arguments count] <= 0 || [command.arguments objectAtIndex:0] == (id)[NSNull null]) {
-        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no score param sent"];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        return;
-    }
-    NSMutableDictionary *score = [NSMutableDictionary dictionaryWithObjectsAndKeys: [NSString stringWithFormat:@"%@", [command.arguments objectAtIndex:0]], @"score", nil];
-    
-    
-    [FBRequestConnection startWithGraphPath:@"/me/scores"
-                                 parameters: score
-                                 HTTPMethod: @"POST"
-                          completionHandler: ^(FBRequestConnection *connection, id result, NSError *error) {
-                              if (!error) {
-                                  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@""];
-                                  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-                              }
-                              else {
-                                  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to post score"];
-                                  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-                              }
-                          }];
-}
-
-- (void)getScores:(CDVInvokedUrlCommand*)command
-{
-    if([FBSession.activeSession isOpen] == NO) { // not have a session to post
-        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"no active session"];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        return;
-    }
-    
-    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"/%@/scores", [CordovaFacebook appId]]
-                                 parameters: nil
-                                 HTTPMethod: @"GET"
-                          completionHandler: ^(FBRequestConnection *connection, id result, NSError *error) {
-                              if (!error) {
-                                  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:result];
-                                  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-                              }
-                              else {
-                                  CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to get scores"];
-                                  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-                              }
-                          }];
-}
 
 - (void)graphCall:(CDVInvokedUrlCommand*)command
 {

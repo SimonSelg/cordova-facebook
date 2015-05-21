@@ -1,27 +1,29 @@
-cordova-facebook
+CordovaFacebook
 ================
 
 [Cordova](http://cordova.apache.org/) plugin that handles Facebook integration for mobile (iOS and Android) apps.
-
 Project uses mobile native platform FacebookSDK for iOS and Android to utilize basic operations for a mobile app that uses Cordova.
 
-We also provide [TypeScript](http://www.typescriptlang.org/) source and type definition files together with the JavaScript for the client side with this plugin.
+This is fork from great [plugin written in ccsoft.](https://github.com/ccsoft/cordova-facebook)
+The original phonegap-facebook plugin is just not working well and I wasn't really satisfied with installation of the plugin from ccsoft.
+So I created fork and now you can easily install the facebook plugin with all features that ccsoft version have
+(except scores method, I just found them unnecessary).
+
+CCsoft plugin provide [TypeScript](http://www.typescriptlang.org/) source and type definition files together with the JavaScript for the client side with this plugin.
+
 
 ##Versions
-Sample app is built and tested with Cordova 3.6.3 (Android and iOS) and we only support Cordova version > 3.0.
+Sample app is built and tested with Cordova 4.3.0 (Android and iOS) and we only support Cordova version > 3.0.
 
 We currently tested FacebookSDK for following platforms and versions:
-
-- [FacebookSDK iOS 3.18](https://developers.facebook.com/docs/ios/)
-
+- [FacebookSDK iOS v4.1.0](https://developers.facebook.com/docs/ios/)
 - [FacebookSDK Android 3.23](https://developers.facebook.com/docs/android/)
+
 
 ##Prerequisites
 
 ###iOS
-Download the latest [FacebookSDK](https://developers.facebook.com/docs/ios/), and follow the [getting started guideline](https://developers.facebook.com/docs/ios/getting-started/).
-
-The guideline is well documented and people at Facebook may change stuff in the future, so we stick to that instead of fancy cordova plugin hacks (well, cordova people also modify plugin flow too).
+Download the latest [FacebookSDK](https://developers.facebook.com/docs/ios/) and install package.
 
 ###Android
 
@@ -36,51 +38,23 @@ Here is what to do for Android before installing our plugin.
 
     ![Screenshot](https://github.com/sromku/android-simple-facebook/wiki/images/reference_to_sdk.png)
 
+
 ##Installing the plugin
 To add this plugin just type:
-```cordova plugin add https://github.com/ccsoft/cordova-facebook```
+```cordova plugin add https://github.com/huttarichard/cordova-facebook --variable APP_ID="123456789" --variable APP_NAME="myApplication"```
 
 To remove this plugin type:
-```cordova plugin remove com.ccsoft.plugin.CordovaFacebook```
+```cordova plugin remove com.huttarichard.CordovaFacebook```
 
 ##Usage
-Replace the openURL method in your AppDelegate.m (if already exists, add it otherwise) with the following code block
-
-        - (BOOL)application:(UIApplication *)application
-                    openURL:(NSURL *)url
-            sourceApplication:(NSString *)sourceApplication
-                    annotation:(id)annotation
-        {
-            if (!url) {
-                return NO;
-            }
-
-            NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                            url, @"url", sourceApplication, @"sourceApplication", @"NO", @"success", nil];
-            [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"CordovaPluginOpenURLNotification" object:self userInfo:dict]];
-
-            NSString* success = [dict objectForKey:@"success"];
-
-            if([success isEqualToString:@"NO"]) {
-                // calls into javascript global function 'handleOpenURL'
-                NSString* jsString = [NSString stringWithFormat:@"handleOpenURL(\"%@\");", url];
-                [self.viewController.webView stringByEvaluatingJavaScriptFromString:jsString];
-
-                // all plugins will get the notification, and their handlers will be called
-                [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:CDVPluginHandleOpenURLNotification object:url]];
-                return YES;
-            }
-            return ![success isEqualToString:@"NO"];
-        }
 
 Then, in your js file (probably in index.js)
 
 
-	// Get a reference to the plugin first
-    var plugin = new CC.CordovaFacebook();
+// Get a reference to the plugin first
+var plugin = new CordovaFacebook();
 
 The plugin has the following methods:
-
 * [init](#init)
 * [login](#login)
 * [logout](#logout)
@@ -89,8 +63,6 @@ The plugin has the following methods:
 * [feed](#feed)
 * [invite](#invite)
 * [deleteRequest](#deleterequest)
-* [postScore](#postscore)
-* [getScores](#getscores)
 * [graphCall](#graphcall)
 
 ***
@@ -100,17 +72,17 @@ Initializes the plugin. Must be called before calling any other function.
 
 >####parameters
 
->> *appId*: string: Your FB app id.
+> *appId*: string: Your FB app id.
 
->> *appName*: string: Your FB app name.
+> *appName*: string: Your FB app name.
 
->> *appPermissions*: array: Your FB app permissions as an array of strings.
+> *appPermissions*: array: Your FB app permissions as an array of strings.
 
->> *successCallback*: function: If not already logged in, we return an empty string. If already logged in to FB we return JSONObject for "accessToken", "expirationDate" and "permissions". Expiration date is a timestamp value. Permissions are retruned as JSONArray.
+> *successCallback*: function: If not already logged in, we return an empty string. If already logged in to FB we return JSONObject for "accessToken", "expirationDate" and "permissions". Expiration date is a timestamp value. Permissions are retruned as JSONArray.
 
->> *failureCallback*: function: Called with failure reason string.
+> *failureCallback*: function: Called with failure reason string.
 
->####example
+####example
 
 	plugin.init('YOUR_FB_APP_ID', 'YOUR_FB_APP_NAME',
 		['public_profile', 'email', 'publish_actions'],
@@ -128,11 +100,11 @@ Initializes the plugin. Must be called before calling any other function.
 
 >####parameters
 
->>*successCallback*: function: Called with a JSONObject for "accessToken", "expirationDate" and "permissions". Expiration date is a timestamp value. Permissions are retruned as JSONArray.
+>*successCallback*: function: Called with a JSONObject for "accessToken", "expirationDate" and "permissions". Expiration date is a timestamp value. Permissions are retruned as JSONArray.
 
->>*failureCallback*: function: Called with failure reason string.
+>*failureCallback*: function: Called with failure reason string.
 
->####example
+####example
 
 	plugin.login(function(response) {
 		console.log("Access token is: " + response.accessToken);
@@ -146,9 +118,9 @@ Initializes the plugin. Must be called before calling any other function.
 
 >####parameters
 
->>*successCallback*: function: Called with no params.
+>*successCallback*: function: Called with no params.
 
->####example
+####example
 
 	plugin.logout(successCallback);
 
@@ -161,11 +133,11 @@ See the example below for Android. (They must be equiavelent, let us know if the
 
 >####parameters
 
->>*successCallback*: function: Called with user info data
+>*successCallback*: function: Called with user info data
 
->>*failureCallback*: function: Called with failure reason string.
+>*failureCallback*: function: Called with failure reason string.
 
->####example
+####example
 
 	plugin.info(function(data) {
 		console.log("User Id: "		+ data.id);
@@ -186,21 +158,21 @@ See the example below for Android. (They must be equiavelent, let us know if the
 
 >####parameters
 
->>*name*: string
+>*name*: string
 
->>*url*: string
+>*url*: string
 
->>*logoUrl*: string
+>*logoUrl*: string
 
->>*caption*: string
+>*caption*: string
 
->>*description*: string
+>*description*: string
 
->>*successCallback*: function: post_id (on iOS, if Facebook app is installed and used for share, pass no parameters to callback on success)
+>*successCallback*: function: post_id (on iOS, if Facebook app is installed and used for share, pass no parameters to callback on success)
 
->>*failureCallback*: function: Called with failure reason string.
+>*failureCallback*: function: Called with failure reason string.
 
->####example
+####example
 
 	plugin.share('Name', 'http://www.example.com', 'http://www.example.com/test.png',
 		'Test caption', 'Test description.', successCallback, failureCallback);
@@ -212,21 +184,21 @@ feed call requires an active session. Shows facebook web dialog as a popup on iO
 
 >####parameters
 
->>*name*: string
+>*name*: string
 
->>*url*: string
+>*url*: string
 
->>*logoUrl*: string
+>*logoUrl*: string
 
->>*caption*: string
+>*caption*: string
 
->>*description*: string
+>*description*: string
 
->>*successCallback*: function: post_id (on iOS, if Facebook app is installed and used for share, pass no parameters to callback on success)
+>*successCallback*: function: post_id (on iOS, if Facebook app is installed and used for share, pass no parameters to callback on success)
 
->>*failureCallback*: function: Called with failure reason string.
+>*failureCallback*: function: Called with failure reason string.
 
->####example
+####example
 
 	plugin.feed('Name', 'http://www.example.com', 'http://www.example.com/test.png',
 		'Test caption', 'Test description.', successCallback, failureCallback);
@@ -238,15 +210,15 @@ invite call requires an active session. Shows facebook invite dialog and returns
 
 >####parameters
 
->>*message*: string: Mesage to be shown with the invitation (to friend).
+>*message*: string: Mesage to be shown with the invitation (to friend).
 
->>*title*: string: Title to be shown with the invitation (to friend).
+>*title*: string: Title to be shown with the invitation (to friend).
 
->>*successCallback*: function: Returns invitation id and the fb id of people the invitation has been sent.
+>*successCallback*: function: Returns invitation id and the fb id of people the invitation has been sent.
 
->>*failureCallback*: function: Called with failure reason string.
+>*failureCallback*: function: Called with failure reason string.
 
->####example
+####example
 
 	plugin.invite('Invitation message better be inviting', 'Invitation Title', successCallback, failureCallback);
 
@@ -263,13 +235,13 @@ The procedure is explained in Facebook SDK documentation [here](https://develope
 
 >####parameters
 
->>*request*: string: Request to delete, note that it should be of the form: "requestid_fbuserid", you MUST concatenate these two manually on your js side!
+>*request*: string: Request to delete, note that it should be of the form: "requestid_fbuserid", you MUST concatenate these two manually on your js side!
 
->>*successCallback*: function: returns nothing.
+>*successCallback*: function: returns nothing.
 
->>*failureCallback*: function: Called with failure reason string.
+>*failureCallback*: function: Called with failure reason string.
 
->####example
+####example
 
 	plugin.deleteRequest(requestId + '_' + fbuserId, successCallback, failureCallback);
 
@@ -285,48 +257,15 @@ Post score for the user. Note that your app should be classified as a game in Fa
 
 >####parameters
 
->>*score*: number: integer score value.
+>*score*: number: integer score value.
 
->>*successCallback*: function: returns nothing.
+>*successCallback*: function: returns nothing.
 
->>*failureCallback*: function: Called with failure reason string.
+>*failureCallback*: function: Called with failure reason string.
 
->####example
+####example
 
 	plugin.postScore(score, successCallback, failureCallback);
-
-For implementation details:
-- Facebook documentation on Scores API [here](https://developers.facebook.com/docs/games/scores)
-
-***
-
-###getScores
-Gets the score for the user and his/her friends. Note that your app should be classified as a game in Facebook app settings.
-
->####parameters
-
->>*scores*: []: json array of scores, each object in array contains *score* and *user* as follows:
-
->>> *score*: number; // best score of that user
-
->>> *user.id*: string; // user id
-
->>> *user.name*: string; // user name
-
->>*successCallback*: function: returns nothing.
-
->>*failureCallback*: function: Called with failure reason string.
-
->####example
-
-	plugin.getScores(function(resp) {
-        for (var i = 0; i < resp.length; i++) {
-            console.log("Score Order: " + i);
-            console.log("User Id: " + resp[i].user.id);
-            console.log("User Name: " + resp[i].user.name);
-            console.log("Score: " + resp[i].score);
-        }
-	}, failureCallback);
 
 For implementation details:
 - Facebook documentation on Scores API [here](https://developers.facebook.com/docs/games/scores)
@@ -338,17 +277,17 @@ Makes a call to graph API using FB SDK.
 
 >####parameters
 
->>*node*: string: The graph path
+>*node*: string: The graph path
 
->>> *params*: JSON Object; // params to be passed, eg: to get the name of a friend {"fields": "name"}
+> *params*: JSON Object; // params to be passed, eg: to get the name of a friend {"fields": "name"}
 
->>> *method*: string; // one of "GET", "POST", "DELETE"
+> *method*: string; // one of "GET", "POST", "DELETE"
 
->>*successCallback*: function: returns result if any.
+>*successCallback*: function: returns result if any.
 
->>*failureCallback*: function: Called with failure reason string.
+>*failureCallback*: function: Called with failure reason string.
 
->####example
+####example
 
 	plugin.graphCall("me", {"fields": "name,id"}, "GET", function(resp) {
            console.log("My name is: " + resp.name + " and id is: " + resp.id);

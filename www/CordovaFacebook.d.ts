@@ -1,4 +1,4 @@
-declare module CC {
+declare module plugin {
     export interface ICordovaFacebook {
         init: (appId: string, appNamespace: string, appPermissions: string[], successcb?: (r: any) => void, failcb?: (err: any) => void) => void;
         login: (successcb?: (r: any) => void, failcb?: (err: any) => void) => void;
@@ -8,8 +8,6 @@ declare module CC {
         share: (name: string, webUrl: string, logoUrl: string, caption: string, description: string, successcb?: () => void, failcb?: (err: any) => void) => void;
         invite: (message: string, title: string, successcb: (req: any) => void, failcb?: (err: any) => void) => void;
         deleteRequest: (request: string, successcb?: () => void, failcb?: (err: any) => void) => void;
-        postScore: (score: number, successcb?: () => void, failcb?: (err: any) => void) => void;
-        getScores: (successcb: (scores: any[]) => void, failcb?: (err: any) => void) => void;
         graphCall: (node: string, params: any, method: string, successcb: (data: any) => void, failcb?: (err: any) => void) => void;
     }
 }

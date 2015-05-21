@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	id="com.ccsoft.plugin.CordovaFacebook"
+	id="com.huttarichard.CordovaFacebook"
 	version="1.1.0">
 
 	<name>CordovaFacebook</name>
     <description>Cordova plugin that handles Facebook integration in mobile apps.</description>
-    <author>CCSoft</author>
-    <repo>https://github.com/ccsoft/cordova-facebook/</repo>
-    <issue>https://github.com/ccsoft/cordova-facebook/issues</issue>
+    <author>Richard Hutta (origin from ccsoft)</author>
+    <repo>https://github.com/huttarichard/cordova-facebook</repo>
+    <issue>https://github.com/huttarichard/cordova-facebook/issues</issue>
     <keywords>facebook,cordova,ccsoft</keywords>
     <license>Apache 2.0 License</license>
 
@@ -19,8 +19,8 @@
     <preference name="APP_ID" />
     <preference name="APP_NAME" />
   
-    <js-module src="www/CordovaFacebook.js">
-        <merges target="CC" />
+    <js-module src="www/CordovaFacebook.js" name="CordovaFacebook">
+        <clobbers target="CordovaFacebook" />
     </js-module>
 
 	<!-- android -->
@@ -38,7 +38,7 @@
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="CordovaFacebook">
-                <param name="android-package" value="com.ccsoft.plugin.CordovaFacebook" />
+                <param name="android-package" value="com.huttarichard.CordovaFacebook" />
             </feature>
         </config-file>
 	</platform>

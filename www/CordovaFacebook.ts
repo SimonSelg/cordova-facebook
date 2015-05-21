@@ -1,9 +1,8 @@
 /// <reference path='CordovaFacebook.d.ts' />
-
-module CC {
+module plugin {
     export class CordovaFacebook implements ICordovaFacebook {
-        
-        init(appId: string, appNamespace: string, appPermissions: string[], successcb?: (r: any) => void, failcb?: (err: any) => void) {
+
+        init(appId:string, appNamespace:string, appPermissions:string[], successcb?:(r:any) => void, failcb?:(err:any) => void) {
             if (!(<any>window).cordova) {
                 if (failcb) failcb("no cordova");
                 return;
@@ -17,12 +16,12 @@ module CC {
                     if (failcb) failcb(err);
                 }, "CordovaFacebook", "init", [appId, appNamespace, appPermissions]);
         }
-        
-        login(successcb?: (r: any) => void, failcb?: (err: any) => void) {
+
+        login(successcb?:(r:any) => void, failcb?:(err:any) => void) {
             if (!(<any>window).cordova) {
                 if (failcb) failcb("no cordova");
                 return;
-            }            
+            }
             (<any>window).cordova.exec(
                 (response) => {
                     if (successcb) successcb(response);
@@ -33,20 +32,20 @@ module CC {
                 }, "CordovaFacebook", "login", []);
         }
 
-        logout(successcb?: (r: any) => void) {
+        logout(successcb?:(r:any) => void) {
             if (!(<any>window).cordova) {
                 return;
-            }            
+            }
             (<any>window).cordova.exec(
                 (response) => {
                     if (successcb) successcb(response);
                 },
                 (err) => {
                     console.log(err)
-            }, "CordovaFacebook", "logout", []);
+                }, "CordovaFacebook", "logout", []);
         }
 
-        info(successcb?: (r: any) => void, failcb?: (err: any) => void) {
+        info(successcb?:(r:any) => void, failcb?:(err:any) => void) {
             if (!(<any>window).cordova) {
                 if (failcb) failcb("no cordova");
                 return;
@@ -61,11 +60,11 @@ module CC {
                 }, "CordovaFacebook", "info", []);
         }
 
-        feed(name: string, webUrl: string, logoUrl: string, caption: string, description: string, successcb?: (r: any) => void, failcb?: (err: any) => void) {
+        feed(name:string, webUrl:string, logoUrl:string, caption:string, description:string, successcb?:(r:any) => void, failcb?:(err:any) => void) {
             if (!(<any>window).cordova) {
                 if (failcb) failcb("no cordova");
                 return;
-            }            
+            }
             (<any>window).cordova.exec(
                 (response) => {
                     if (successcb) {
@@ -79,18 +78,18 @@ module CC {
                 (err) => {
                     console.log("feed call failed with error: " + err);
                     if (failcb) failcb(err);
-            }, "CordovaFacebook", "feed", [name, webUrl, logoUrl, caption, description]);
+                }, "CordovaFacebook", "feed", [name, webUrl, logoUrl, caption, description]);
         }
 
-        share(name: string, webUrl: string, logoUrl: string, caption: string, description: string, successcb?: () => void, failcb?: (err: any) => void) {
+        share(name:string, webUrl:string, logoUrl:string, caption:string, description:string, successcb?:() => void, failcb?:(err:any) => void) {
             if (!(<any>window).cordova) {
                 if (failcb) failcb("no cordova");
                 return;
-            }            
+            }
             (<any>window).cordova.exec(
                 (response) => {
                     if (successcb) {
-                        successcb();                        
+                        successcb();
                     }
                 },
                 (err) => {
@@ -99,7 +98,7 @@ module CC {
                 }, "CordovaFacebook", "share", [name, webUrl, logoUrl, caption, description]);
         }
 
-        invite(message: string, title: string, successcb: (req: any) => void, failcb?: (err: any) => void) {
+        invite(message:string, title:string, successcb:(req:any) => void, failcb?:(err:any) => void) {
             if (!(<any>window).cordova) {
                 if (failcb) failcb("no cordova");
                 return;
@@ -113,10 +112,10 @@ module CC {
                 (err) => {
                     console.log("invite call failed with error: " + err);
                     if (failcb) failcb(err);
-                }, "CordovaFacebook", "invite", [message, title]);            
+                }, "CordovaFacebook", "invite", [message, title]);
         }
 
-        deleteRequest(request: string, successcb?: () => void, failcb?: (err: any) => void) {
+        deleteRequest(request:string, successcb?:() => void, failcb?:(err:any) => void) {
             if (!(<any>window).cordova) {
                 if (failcb) failcb("no cordova");
                 return;
@@ -131,40 +130,7 @@ module CC {
                 }, "CordovaFacebook", "deleteRequest", [request]);
         }
 
-        postScore(score: number, successcb?: () => void, failcb?: (err: any) => void) {
-            if (!(<any>window).cordova) {
-                if (failcb) failcb("no cordova");
-                return;
-            }
-            (<any>window).cordova.exec(
-                () => {
-                    if (successcb) successcb();
-                },
-                (err) => {
-                    console.error("postScore call failed with error: " + err);
-                    if (failcb) failcb(err);
-                }, "CordovaFacebook", "postScore", [score]);
-        }
-
-        getScores(successcb: (scores: any[]) => void, failcb?: (err: any) => void) {
-            if (!(<any>window).cordova) {
-                if (failcb) failcb("no cordova");
-                return;
-            }
-
-            (<any>window).cordova.exec((resp) => {
-                if (resp && resp.data) {
-                    successcb(resp.data);
-                } else {
-                    successcb(null);
-                }
-            }, (err) => {
-                    console.error("getScores call failed with error: " + err);
-                    if (failcb) failcb(err);
-                }, "CordovaFacebook", "getScores", []);
-        }
-
-        graphCall(node: string, params: any, method: string, successcb: (data: any) => void, failcb?: (err: any) => void) {
+        graphCall(node:string, params:any, method:string, successcb:(data:any) => void, failcb?:(err:any) => void) {
             if (!(<any>window).cordova) {
                 if (failcb) failcb("no cordova");
                 return;
@@ -173,12 +139,12 @@ module CC {
             (<any>window).cordova.exec((resp) => {
                 successcb(resp);
             }, (err) => {
-                    console.error("getGraph call failed with error: " + err);
-                    if (failcb) failcb(err);
-                }, "CordovaFacebook", "graphCall", [node, params, method]);
+                console.error("getGraph call failed with error: " + err);
+                if (failcb) failcb(err);
+            }, "CordovaFacebook", "graphCall", [node, params, method]);
         }
     }
 }
 
 declare var module;
-module.exports = CC;
+module.exports = plugin.CordovaFacebook;
