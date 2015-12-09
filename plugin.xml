@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	id="com.huttarichard.CordovaFacebook"
-	version="1.1.0">
+	id="me.simonselg.cordovafacebook"
+	version="1.1.1">
 
 	<name>CordovaFacebook</name>
     <description>Cordova plugin that handles Facebook integration in mobile apps.</description>
-    <author>Richard Hutta (origin from ccsoft)</author>
-    <repo>https://github.com/huttarichard/cordova-facebook</repo>
-    <issue>https://github.com/huttarichard/cordova-facebook/issues</issue>
+    <author>Simon Selg (origin from ccsoft and Richard Hutta)</author>
+    <repo>https://github.com/simonselg/cordova-facebook</repo>
+    <issue>https://github.com/simonselg/cordova-facebook/issues</issue>
     <keywords>facebook,cordova,ccsoft</keywords>
     <license>Apache 2.0 License</license>
 
@@ -18,7 +18,7 @@
 
     <preference name="APP_ID" />
     <preference name="APP_NAME" />
-  
+
     <js-module src="www/CordovaFacebook.js" name="CordovaFacebook">
         <clobbers target="CordovaFacebook" />
     </js-module>
@@ -42,7 +42,7 @@
             </feature>
         </config-file>
 	</platform>
-    
+
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="CordovaFacebook">
@@ -77,4 +77,3 @@
         <source-file src="src/ios/CordovaFacebook.m" />
     </platform>
 </plugin>
-

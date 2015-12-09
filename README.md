@@ -2,18 +2,15 @@ CordovaFacebook
 ================
 
 [Cordova](http://cordova.apache.org/) plugin that handles Facebook integration for mobile (iOS and Android) apps.
-Project uses mobile native platform FacebookSDK for iOS and Android to utilize basic operations for a mobile app that uses Cordova.
+The project uses the native platform FacebookSDK for iOS and Android to support basic operations for a mobile app that uses Cordova.
 
-This is fork from great [plugin written in ccsoft.](https://github.com/ccsoft/cordova-facebook)
-The original phonegap-facebook plugin is just not working well and I wasn't really satisfied with installation of the plugin from ccsoft.
-So I created fork and now you can easily install the facebook plugin with all features that ccsoft version have
-(except scores method, I just found them unnecessary).
+This is fork from a [fork](https://github.com/huttarichard/cordova-facebook) from great [plugin written by ccsoft.](https://github.com/ccsoft/cordova-facebook)
 
-CCsoft plugin provide [TypeScript](http://www.typescriptlang.org/) source and type definition files together with the JavaScript for the client side with this plugin.
+The plugin provides [TypeScript](http://www.typescriptlang.org/) source and type definition files together with the JavaScript for the client side.
 
 
 ##Versions
-Sample app is built and tested with Cordova 4.3.0 (Android and iOS) and we only support Cordova version > 3.0.
+The sample app is built and tested with Cordova 4.3.0 (Android and iOS) and we only support Cordova version > 3.0.
 
 We currently tested FacebookSDK for following platforms and versions:
 - [FacebookSDK iOS v4.1.0](https://developers.facebook.com/docs/ios/)
@@ -23,11 +20,11 @@ We currently tested FacebookSDK for following platforms and versions:
 ##Prerequisites
 
 ###iOS
-Download the latest [FacebookSDK](https://developers.facebook.com/docs/ios/) and install package.
+Download the latest [FacebookSDK](https://developers.facebook.com/docs/ios/) and install the package.
 
 ###Android
 
-Unlike iOS, Android [getting started guideline](https://developers.facebook.com/docs/android/getting-started/) is pretty long and scary.
+Unlike iOS, Androids [getting started guideline](https://developers.facebook.com/docs/android/getting-started/) is pretty long and scary.
 For Android we rely on [Android Simple Facebook](https://github.com/sromku/android-simple-facebook) by [Roman Kushnarenko](https://github.com/sromku), many thanks for that project. We distribute the compiled version (2.2) of the library with the plugin, so you don't have to worry about anything.
 
 Here is what to do for Android before installing our plugin.
@@ -41,10 +38,10 @@ Here is what to do for Android before installing our plugin.
 
 ##Installing the plugin
 To add this plugin just type:
-```cordova plugin add https://github.com/huttarichard/cordova-facebook --variable APP_ID="123456789" --variable APP_NAME="myApplication"```
+```cordova plugin add https://github.com/SimonSelg/cordova-facebook.git --variable APP_ID="123456789" --variable APP_NAME="myApplication"```
 
 To remove this plugin type:
-```cordova plugin remove com.huttarichard.CordovaFacebook```
+```cordova plugin remove me.simonselg.cordovafacebook```
 
 ##Usage
 
